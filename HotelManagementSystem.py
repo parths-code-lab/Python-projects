@@ -78,7 +78,7 @@ class Booking:
             # finding hotel name
             hotel_name = input("Enter hotel name to search : ")
             for hotel in hotels_list:
-                if hotel_name.lower() == hotel.name.lower():
+                if hotel_name.lower() in hotel.name.lower():
                     hotel_found = hotel
                     break
             if hotel_found:
@@ -107,13 +107,21 @@ class Booking:
             # update system
             hotel_found.rooms -= rooms_needed
             cost = rooms_needed * hotel_found.price
-            user_found.booking_cost += cost
+
+            if cost > user_found.booking_cost:
+                print("Insufficient balance")
+                return
+
+            user_found.booking_cost -= cost
+
     
             # confirmation
             print("\nBooking Successful!")
             print("Hotel:", hotel_found.name)
             print("Rooms booked:", rooms_needed)
-            print("Total cost:", cost)
+            print("Remaining balance:", user_found.booking_cost)
+            print("Remaining rooms:", hotel_found.rooms)
+
 
             
 
@@ -126,6 +134,9 @@ def menu():
     print("4 Filter by City")
     print("5 Filter by Rooms")
     print("6 Exit")
+    print("--- Booking System ---")
+    print("7 Book a hotel")
+    print("8 Exit")
 
 hotel_Raj = Hotel("Raj",20,"mumbai",4.2,2000)
 hotel_Mani = Hotel("Mani",13,"pune",4.6,5000)
@@ -138,6 +149,7 @@ hotels_list = [hotel_Raj,hotel_Mani,hotel_Taj]
 users_list = [user_Max,user_Jay]
 
 op = Operation()
+bk = Booking()
 
 while True:
     menu()
@@ -166,6 +178,13 @@ while True:
                 print("Please enter valid number")
 
         elif user_input == 6:
+            print("Exiting Program...")
+            break
+
+        elif user_input == 7:
+            bk.book_hotel(hotels_list,users_list)
+
+        elif user_input == 8:
             print("Exiting Program...")
             break
 
